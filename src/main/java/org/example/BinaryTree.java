@@ -4,6 +4,7 @@ public class BinaryTree<T extends Comparable<T>> {
 
     private Node<T> topNode;
 
+    @SafeVarargs
     public static <T extends Comparable<T>> BinaryTree<T> of(T... values) {
         BinaryTree<T> result = new BinaryTree<>();
 

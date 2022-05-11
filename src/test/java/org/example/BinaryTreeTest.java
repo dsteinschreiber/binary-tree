@@ -8,11 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class BinaryTreeTest {
 
     @Test
-    public void createTreeTest(){
-        BinaryTree<Integer> newTree = new BinaryTree<>();
-    }
-
-    @Test
     public void isEmptyTest() {
         BinaryTree<Integer> newTree = new BinaryTree<>();
         assertTrue(newTree.isEmpty());
