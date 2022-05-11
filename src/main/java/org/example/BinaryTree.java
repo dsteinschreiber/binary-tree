@@ -4,10 +4,10 @@ public class BinaryTree<T extends Comparable<T>> {
 
     private Node<T> topNode;
 
-    public static <T extends Comparable<T>> BinaryTree<T> of(T... values){
+    public static <T extends Comparable<T>> BinaryTree<T> of(T... values) {
         BinaryTree<T> result = new BinaryTree<>();
 
-        for (T value : values){
+        for (T value : values) {
             result.insert(value);
         }
 
@@ -51,8 +51,25 @@ public class BinaryTree<T extends Comparable<T>> {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return this.topNode.toString();
     }
 
+    public boolean contains(T value) {
+
+        Node<T> cursor = this.topNode;
+
+        while (cursor != null) {
+            if (cursor.value.compareTo(value) == 0) {
+                return true;
+            } else if (cursor.value.compareTo(value) > 0) {
+                cursor = cursor.left;
+            } else {
+                cursor = cursor.right;
+            }
+        }
+
+        return false;
+    }
 }
+
