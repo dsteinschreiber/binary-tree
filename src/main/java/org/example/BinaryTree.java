@@ -72,5 +72,71 @@ public class BinaryTree<T extends Comparable<T>> {
 
         return false;
     }
+
+
+    public MyList<T> toList() {
+        MyList<T> result = new MyLinkedList<>();
+
+        MyList<Node<T>> cursorList = new MyLinkedList<>();
+        MyList<Character> downLeftOrRight = new MyLinkedList<>();
+
+        Character dlr;
+        downLeftOrRight.push('D');
+
+        Node<T> cursor = this.topNode;
+
+        while (true) {
+            dlr = downLeftOrRight.pop();
+
+            if (cursor.left != null && dlr == 'D') {
+                cursorList.push(cursor);
+                downLeftOrRight.push('L');
+                cursor = cursor.left;
+                downLeftOrRight.push('D');
+                continue;
+            }
+
+            if (dlr != 'R') {
+                result.append(cursor.value);
+            }
+
+            if (cursor.right != null && dlr != 'R') {
+                cursorList.push(cursor);
+                downLeftOrRight.push('R');
+                cursor = cursor.right;
+                downLeftOrRight.push('D');
+                continue;
+            }
+
+            if (cursorList.isEmpty()) {
+                break;
+            }
+
+            cursor = cursorList.pop();
+        }
+
+        return result;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

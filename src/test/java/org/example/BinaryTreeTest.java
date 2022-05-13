@@ -23,7 +23,12 @@ public class BinaryTreeTest {
         assertTrue(BinaryTree.of(7,3,9,1,4,99,-99).contains(99));
         assertFalse(BinaryTree.of(7,3,9,1,4,99,-99).contains(66));
         assertFalse(BinaryTree.<Integer>of().contains(1)); //REMEMBER THIS FOREVER
-
     }
 
+    @Test
+    public void toListTest(){
+        BinaryTree<Integer> test = BinaryTree.of(9,1,8,2,7,3,6,4,5);
+
+        System.out.println(test.toList());
+    }
 }
