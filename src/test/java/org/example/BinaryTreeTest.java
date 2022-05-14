@@ -2,6 +2,8 @@ package org.example;
 
 import org.junit.jupiter.api.Test;
 
+import javax.annotation.processing.Generated;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -27,8 +29,44 @@ public class BinaryTreeTest {
 
     @Test
     public void toListTest(){
-        BinaryTree<Integer> test = BinaryTree.of(9,1,8,2,7,3,6,4,5);
+        BinaryTree<Integer> test1 = BinaryTree.of(9,1,8,2,7,3,6,4,5);
+        BinaryTree<Integer> test2= BinaryTree.of(20,80,60,10,30,90,70,40,50);
 
-        System.out.println(test.toList());
+        System.out.println(test1.toList());
+        System.out.println(test2.toList());
+    }
+
+    @Test
+    public void walkTest() {
+        BinaryTree<Integer> test1 = BinaryTree.of(9,1,8,2,7,3,6,4,5);
+
+        int[] result = {0};
+
+        test1.walk((value -> result[0] = result[0] + value));
+
+        System.out.println(result[0]);
+
+    }
+
+    @Test
+    public void reduceTest() {
+        BinaryTree<Integer> test1 = BinaryTree.of(9,1,8,2,7,3,6,4,5);
+
+        int thisResult = test1.reduce((result, value) -> result + value, 0);
+
+        System.out.println(thisResult);
+    }
+
+    @Test
+    public void visitorToList() {
+        BinaryTree<Integer> test1 = BinaryTree.of(9,1,8,2,7,3,6,4,5);
+        System.out.println(test1.visitorToList());
+    }
+
+    @Test
+    public void reduceToListTest() {
+        BinaryTree<Integer> test1 = BinaryTree.of(9,1,8,2,7,3,6,4,5);
+
+        System.out.println(test1.reduceToList());
     }
 }

@@ -1,5 +1,9 @@
 package org.example;
 
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 public class BinaryTree<T extends Comparable<T>> {
 
     private Node<T> topNode;
@@ -75,10 +79,16 @@ public class BinaryTree<T extends Comparable<T>> {
 
 
     public MyList<T> toList() {
-        MyList<T> result = new MyLinkedList<>();
+        // Depth first
+        // https://en.wikipedia.org/wiki/Depth-first_search
+        // Finite state machine
+        // https://en.wikipedia.org/wiki/Finite-state_machine
 
-        MyList<Node<T>> cursorList = new MyLinkedList<>();
-        MyList<Character> downLeftOrRight = new MyLinkedList<>();
+
+        final MyList<T> result = new MyLinkedList<>();
+
+        final MyList<Node<T>> cursorList = new MyLinkedList<>();
+        final MyList<Character> downLeftOrRight = new MyLinkedList<>();
 
         Character dlr;
         downLeftOrRight.push('D');
@@ -117,6 +127,65 @@ public class BinaryTree<T extends Comparable<T>> {
 
         return result;
     }
+
+
+    // Consumer<T> is like Function<T, Void> ( uses 'accept' instead of 'apply' )
+    public void walk(Consumer<T> visitor) {
+        // this is called "visitor pattern"
+        // https://en.wikipedia.org/wiki/Visitor_pattern
+        if (this.topNode.left != null) {
+            this.leftTree().walk(visitor);
+        }
+        visitor.accept(this.topNode.value);
+        if (this.topNode.right != null) {
+            this.rightTree().walk(visitor);
+        }
+    }
+
+    public <V> V reduce (BiFunction<V, T, V> reducer, V initialResult) {
+        V result = initialResult;
+
+        if (this.topNode.left != null) {
+            result = this.leftTree().reduce(reducer, result);
+        }
+
+        result = reducer.apply(result, this.topNode.value);
+
+        if (this.topNode.right != null) {
+           result = this.rightTree().reduce(reducer, result);
+        }
+
+        return result;
+    }
+
+    public BinaryTree<T> leftTree() {
+        final BinaryTree<T> result = new BinaryTree<>();
+
+        result.topNode = this.topNode.left;
+
+        return result;
+    }
+
+    public BinaryTree<T> rightTree() {
+        final BinaryTree<T> result = new BinaryTree<>();
+
+        result.topNode = this.topNode.right;
+
+        return result;
+    }
+
+    public MyList<T> visitorToList() {
+        final MyList<T> result = new MyLinkedList<>();
+
+        this.walk(value -> result.append(value));
+
+        return result;
+    }
+
+    public MyList<T> reduceToList() {
+        return this.reduce((result, value) -> result.append(value), (MyList<T>)(new MyLinkedList<T>()));
+    }
+
 }
 
 
