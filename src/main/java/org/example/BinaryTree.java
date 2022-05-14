@@ -142,7 +142,7 @@ public class BinaryTree<T extends Comparable<T>> {
         }
     }
 
-    public <V> V reduce (BiFunction<V, T, V> reducer, V initialResult) {
+    public <V> V reduce(BiFunction<V, T, V> reducer, V initialResult) {
         V result = initialResult;
 
         if (this.topNode.left != null) {
@@ -151,8 +151,9 @@ public class BinaryTree<T extends Comparable<T>> {
 
         result = reducer.apply(result, this.topNode.value);
 
+
         if (this.topNode.right != null) {
-           result = this.rightTree().reduce(reducer, result);
+            result = this.rightTree().reduce(reducer, result);
         }
 
         return result;
@@ -183,7 +184,36 @@ public class BinaryTree<T extends Comparable<T>> {
     }
 
     public MyList<T> reduceToList() {
-        return this.reduce((result, value) -> result.append(value), (MyList<T>)(new MyLinkedList<T>()));
+        return this.reduce((result, value) -> result.append(value), (MyList<T>) (new MyLinkedList<T>()));
+    }
+
+    public <V extends Comparable<V>> BinaryTree<V> map(Function<T, V> mapper) {
+        BinaryTree<V> thisResult = new BinaryTree<>();
+        BinaryTree<V> leftTreeResult = null;
+        BinaryTree<V> rightTreeResult = null;
+        V topValue;
+
+        if (this.topNode.left != null) {
+            leftTreeResult = this.leftTree().map(mapper);
+        }
+
+        topValue = mapper.apply(this.topNode.value);
+
+        if (this.topNode.right != null) {
+            rightTreeResult = this.rightTree().map(mapper);
+        }
+
+        thisResult.topNode = new Node<>();
+        thisResult.topNode.value = topValue;
+
+        if (leftTreeResult != null) {
+            thisResult.topNode.left = leftTreeResult.topNode;
+        }
+
+        if (rightTreeResult != null) {
+            thisResult.topNode.right = rightTreeResult.topNode;
+        }
+        return thisResult;
     }
 
 }
